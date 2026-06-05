@@ -1,4 +1,4 @@
-# AI Forward Deployed Engineer (FDE) Training
+# AI Forward Deployed Engineer (FDE) QA
 
 My submission repo for the **AI Forward Deployed Engineer (FDE) Training** — a 12-week hybrid program that turns a fresh graduate into a deployable AI Forward Deployed Engineer.
 
@@ -34,7 +34,7 @@ The course runs in four phases. Weeks unlock on a schedule as the program progre
 
 | Week | Lesson | My work |
 | --- | --- | --- |
-| **Week 0 — Setup and Diagnostic** | [Lesson ↗](https://akmalakhpah.github.io/training-ai-fde/index.html#/week/0) | [week-00/](https://github.com/iklilQA/training-ai-fde.git/) |
+| **Week 0 — Setup and Diagnostic** | [Lesson ↗](https://akmalakhpah.github.io/training-ai-fde/index.html#/week/0) | [week-00/](week-00/) |
 
 ### Phase 1 — Production Engineering Foundations
 
