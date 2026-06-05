@@ -34,7 +34,7 @@ The course runs in four phases. Weeks unlock on a schedule as the program progre
 
 | Week | Lesson | My work |
 | --- | --- | --- |
-| **Week 0 — Setup and Diagnostic** | [Lesson ↗](https://akmalakhpah.github.io/training-ai-fde/index.html#/week/0) | [week-00/](week-00/) |
+| **Week 0 — Setup and Diagnostic** | [Lesson ↗](https://akmalakhpah.github.io/training-ai-fde/index.html#/week/0) | [week-00/](https://github.com/iklilQA/training-ai-fde.git/) |
 
 ### Phase 1 — Production Engineering Foundations
 
