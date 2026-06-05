@@ -1,0 +1,3 @@
+# CLAUDE.md
+
+This is Iklil's submission repository for the **AI Forward Deployed Engineer (FDE) Training** — a 12-week hybrid program (cohort start: 5 June 2026). Work is organised into one folder per week (`week-00/` through `week-12/`), matching the four program phases: Phase 0 Setup (week-00), Phase 1 Production Engineering Foundations (weeks 01–03), Phase 2 AI Application Engineering (weeks 04–07), Phase 3 The FDE Craft (weeks 08–10), and Phase 4 Capstone Embedded Deployment (weeks 11–12). The README is the canonical index and links every week to its lesson and its work folder. API keys and secrets must never be committed — use environment variables only.
