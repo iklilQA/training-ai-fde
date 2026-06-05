@@ -1,4 +1,4 @@
-# AI Forward Deployed Engineer (FDE) QA
+# AI Forward Deployed Engineer (FDE) Training
 
 My submission repo for the **AI Forward Deployed Engineer (FDE) Training** — a 12-week hybrid program that turns a fresh graduate into a deployable AI Forward Deployed Engineer.
 
