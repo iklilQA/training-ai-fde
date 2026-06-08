@@ -8,23 +8,44 @@ Submission for the Phase 0 calibration diagnostic.
 
 **File:** [`diagnostic.py`](diagnostic.py)
 
-**Function:** `parse_dotenv(text: str) -> dict[str, str]`
+A setup readiness checker that validates every item in the pre-Week-1 checklist and exits non-zero if any automated check fails.
 
-Parses a dotenv-style string of `KEY=VALUE` lines into a dictionary, skipping blank lines and `#` comments. Uses `str.partition('=')` internally so that values containing `=` (e.g. URLs with query strings) are preserved intact.
+**Automated checks:**
 
-**Tests:**
-
-| Test | What it checks |
+| Check | What it verifies |
 |---|---|
-| `test_basic` | Parses two plain `KEY=VALUE` pairs correctly |
-| `test_skips_blanks_and_comments` | Ignores blank lines and `#`-prefixed lines |
-| `test_value_contains_equals` | Value with `=` inside is not truncated |
+| Repo layout | `README.md`, `CLAUDE.md`, and `week-00/` all exist |
+| Python 3.12+ | `sys.version_info >= (3, 12)` |
+| pip | `pip` or `pip3` found in PATH |
+| Node.js LTS v20+ | `node --version` major ≥ 20 |
+| npm | `npm --version` found in PATH |
+| Git installed | `git --version` found in PATH |
+| Git global config | `user.name` and `user.email` both set |
+| VS Code CLI | `code` binary found in PATH |
+| Anthropic API key | Env var present (optional — deferred to a later week) |
 
-**Verification — run from the repo root:**
+**Manual checks listed (cannot be automated):**
+
+- Claude Desktop installed and signed in (Claude Pro)
+- Claude Code VS Code extension signed in
+- GitHub signed in through VS Code
+- Test commit pushed to this repo
+- Google account reachable (Docs / Sheets / Slides / Gemini)
+- AWS free-tier login confirmed
+- Cloudflare login confirmed
+
+**Run from the repo root:**
 
 ```bash
-python week-00/diagnostic.py
-# All 3 tests passed.
+python3.12 week-00/diagnostic.py
+```
+
+Expected output when all automated checks pass:
+
+```
+  Automated checks:  8/8 passed
+  All automated checks passed.
+  Tick the MANUAL items above and you are ready for Week 1.
 ```
 
 ---
@@ -63,40 +84,46 @@ git log --oneline -3
 cd ~/Documents/Kelly/A-Pandai/github/training-ai-fde
 
 # Run the diagnostic script
-python week-00/diagnostic.py
+python3.12 week-00/diagnostic.py
 
 # Set an environment variable and read it back
 export APP_ENV=development
 echo $APP_ENV          # → development
 printenv APP_ENV       # → development
+
+# Set the Anthropic API key (when needed — never commit this)
+export ANTHROPIC_API_KEY=sk-ant-...
+python3.12 week-00/diagnostic.py   # key check now shows PASS
 ```
 
 **Verification:**
 
 ```bash
-python week-00/diagnostic.py && echo $APP_ENV
-# All 3 tests passed.
-# development
+python3.12 week-00/diagnostic.py && echo "exit 0 — all checks passed"
 ```
 
 ---
 
-## 4. Function read — `str.partition`
+## 4. Function read — `shutil.which`
 
 ```python
-"host:8080".partition(":")    # → ('host', ':', '8080')
-"no-separator".partition(":") # → ('no-separator', '', '')
-"a=b=c".partition("=")        # → ('a', '=', 'b=c')
+import shutil
+
+shutil.which("python3")   # → '/usr/bin/python3'  (or None if not found)
+shutil.which("code")      # → '/usr/local/bin/code'
+shutil.which("missing")   # → None
 ```
 
 **What it does:**  
-Splits the string at the *first* occurrence of the separator and returns a 3-tuple `(before, sep, after)`. When the separator is absent the middle and last elements are empty strings — this lets callers distinguish "separator not found" from "empty value after separator", which a plain `split("=", 1)` cannot do without extra length checks.
+Searches every directory in `PATH` for an executable with the given name and returns its full path, or `None` if not found. Equivalent to running `which <name>` in the shell, but portable across macOS, Linux, and Windows without spawning a subprocess.
+
+Used in `diagnostic.py` to check whether `git`, `node`, `npm`, `pip`, and `code` are installed and reachable — a `None` return means the tool is either not installed or not on `PATH`.
 
 **What would break it:**
 
 | Input | Result |
 |---|---|
-| `"abc".partition("")` | `ValueError: empty separator` |
-| `"abc".partition(None)` | `TypeError` |
-| Caller assumes binary split | Bug — it always returns a 3-tuple, not 2 elements |
-| Expecting regex behaviour | Bug — separator is a literal string, not a pattern |
+| `shutil.which("")` | `None` (empty string never matches) |
+| Tool installed but not in `PATH` | `None` — PATH must include the install directory |
+| Windows `.bat` / `.cmd` wrappers | Returned correctly — `which` respects `PATHEXT` on Windows |
+| Symlink target missing | Returns the symlink path — does not validate the target exists |
